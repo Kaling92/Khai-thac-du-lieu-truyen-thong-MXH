@@ -97,6 +97,19 @@ def table_slide(slide, title, headers, rows, col_widths=None):
 
 
 def create_presentation():
+    import pandas as pd
+    
+    # Load metrics dynamically
+    reg_csv = os.path.join(PROJECT_ROOT, "report", "figures", "regression_metrics.csv")
+    rank_csv = os.path.join(PROJECT_ROOT, "report", "figures", "ranking_metrics.csv")
+    
+    if os.path.exists(reg_csv) and os.path.exists(rank_csv):
+        df_reg = pd.read_csv(reg_csv, index_col=0)
+        df_rank = pd.read_csv(rank_csv, index_col=0)
+    else:
+        df_reg = None
+        df_rank = None
+
     prs = Presentation()
     prs.slide_width = Inches(13.333)
     prs.slide_height = Inches(7.5)
@@ -277,17 +290,51 @@ def create_presentation():
     # 11–14. Results tables
     s = prs.slides.add_slide(blank)
     set_bg(s, C_LIGHT)
+    
+    if df_reg is not None and df_rank is not None:
+        cbf_rmse = f"{df_reg.loc['Content-Based', 'RMSE']:.4f}"
+        cbf_mae = f"{df_reg.loc['Content-Based', 'MAE']:.4f}"
+        cbf_p10 = f"{df_rank.loc['Content-Based', 'Precision@K'] * 100:.2f}%"
+        cbf_ndcg = f"{df_rank.loc['Content-Based', 'NDCG@K'] * 100:.2f}%"
+        
+        ucf_rmse = f"{df_reg.loc['User-CF (Cosine)', 'RMSE']:.4f}"
+        ucf_mae = f"{df_reg.loc['User-CF (Cosine)', 'MAE']:.4f}"
+        ucf_p10 = f"{df_rank.loc['User-CF (Cosine)', 'Precision@K'] * 100:.2f}%"
+        ucf_ndcg = f"{df_rank.loc['User-CF (Cosine)', 'NDCG@K'] * 100:.2f}%"
+        
+        icf_rmse = f"{df_reg.loc['Item-CF (Cosine)', 'RMSE']:.4f}"
+        icf_mae = f"{df_reg.loc['Item-CF (Cosine)', 'MAE']:.4f}"
+        icf_p10 = f"{df_rank.loc['Item-CF (Cosine)', 'Precision@K'] * 100:.2f}%"
+        icf_ndcg = f"{df_rank.loc['Item-CF (Cosine)', 'NDCG@K'] * 100:.2f}%"
+        
+        svd_rmse = f"{df_reg.loc['Funk SVD (MF)', 'RMSE']:.4f}"
+        svd_mae = f"{df_reg.loc['Funk SVD (MF)', 'MAE']:.4f}"
+        svd_p10 = f"{df_rank.loc['Funk SVD (MF)', 'Precision@K'] * 100:.2f}%"
+        svd_mrr = f"{df_rank.loc['Funk SVD (MF)', 'MRR'] * 100:.2f}%"
+        
+        ncf_rmse = f"{df_reg.loc['Neural CF (NCF)', 'RMSE']:.4f}"
+        ncf_mae = f"{df_reg.loc['Neural CF (NCF)', 'MAE']:.4f}"
+        ncf_p10 = f"{df_rank.loc['Neural CF (NCF)', 'Precision@K'] * 100:.2f}%"
+        ncf_mrr = f"{df_rank.loc['Neural CF (NCF)', 'MRR'] * 100:.2f}%"
+    else:
+        # Fallback values
+        cbf_rmse, cbf_mae, cbf_p10, cbf_ndcg = "1.9502", "1.6100", "36.93%", "36.70%"
+        ucf_rmse, ucf_mae, ucf_p10, ucf_ndcg = "1.6429", "1.4087", "39.50%", "39.92%"
+        icf_rmse, icf_mae, icf_p10, icf_ndcg = "1.6282", "1.4016", "38.51%", "38.27%"
+        svd_rmse, svd_mae, svd_p10, svd_mrr = "1.6467", "1.4141", "37.72%", "57.47%"
+        ncf_rmse, ncf_mae, ncf_p10, ncf_mrr = "1.5898", "1.3763", "35.54%", "62.30%"
+
     table_slide(s, "6. Kết quả CBF & CF (trả lời RQ1)", ["Mô hình", "RMSE", "MAE", "P@10", "NDCG"], [
-        ["CBF (TF-IDF)", "1.9502", "1.6100", "36.93%", "36.70%"],
-        ["User-CF (Cosine) ★", "1.6429", "1.4087", "39.50%", "39.92%"],
-        ["Item-CF (Cosine)", "1.6282", "1.4016", "38.51%", "38.27%"],
+        ["CBF (TF-IDF)", cbf_rmse, cbf_mae, cbf_p10, cbf_ndcg],
+        ["User-CF (Cosine) ★", ucf_rmse, ucf_mae, ucf_p10, ucf_ndcg],
+        ["Item-CF (Cosine)", icf_rmse, icf_mae, icf_p10, icf_ndcg],
     ])
 
     s = prs.slides.add_slide(blank)
     set_bg(s, C_LIGHT)
     table_slide(s, "6. Kết quả SVD & NCF (trả lời RQ2)", ["Mô hình", "RMSE", "MAE", "P@10", "MRR"], [
-        ["Funk SVD (f=10)", "1.6467", "1.4141", "37.72%", "57.47%"],
-        ["Neural CF (MLP) ★", "1.5898", "1.3763", "35.54%", "62.30%"],
+        ["Funk SVD (f=10)", svd_rmse, svd_mae, svd_p10, svd_mrr],
+        ["Neural CF (MLP) ★", ncf_rmse, ncf_mae, ncf_p10, ncf_mrr],
     ])
 
     # 15. Charts
@@ -302,16 +349,16 @@ def create_presentation():
     set_bg(s, C_LIGHT)
     header(s, "7. Thảo luận & Ý nghĩa Thống kê")
     bullets(s, 0.5, 1.5, 6, 5, "Trả lời RQ3", [
-        "Rating Prediction → NCF (RMSE=1.5898)",
-        "Top-K Ranking → User-CF Cosine (P@10=39.50%)",
-        "MRR cao nhất → NCF (62.30%)",
+        f"Rating Prediction → NCF (RMSE={ncf_rmse})",
+        f"Top-K Ranking → NCF (P@10={ncf_p10}) & User-CF (P@10={ucf_p10})",
+        f"MRR tốt nhất → Funk SVD (MRR={svd_mrr})",
         "Không có mô hình tốt nhất tuyệt đối",
     ])
     bullets(s, 6.8, 1.5, 6, 5, "Thảo luận thống kê", [
-        "P@10 chênh 35.5%–39.5% (tối đa 4 điểm %)",
-        "Optimize regression ≠ optimize ranking",
-        "CF > CBF vì khai thác trực tiếp hành vi MXH",
-        "NCF thắng RMSE nhưng thua P@10 → trade-off",
+        f"P@10 chênh lệch giữa các mô hình nhỏ (~1-3%)",
+        "Tối ưu hóa RMSE không đồng nghĩa tối ưu hóa Precision@10",
+        "Học máy phi tuyến (NCF) mạnh về dự đoán điểm tương tác",
+        "Học sâu & Phân rã ma trận tối ưu tùy theo mục tiêu cụ thể",
     ], prefix="📊")
 
     # 17. Error analysis

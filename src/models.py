@@ -325,7 +325,8 @@ class FunkSVDRecommender:
         self.b_u = np.zeros(num_users)
         self.b_i = np.zeros(num_items)
         
-        # Initialize latent vectors with small random values
+        # Initialize latent vectors with small random values (seed for reproducibility)
+        np.random.seed(42)
         self.P = np.random.normal(0, 0.1, (num_users, self.n_factors))
         self.Q = np.random.normal(0, 0.1, (num_items, self.n_factors))
         
@@ -510,6 +511,14 @@ def _build_ncf_recommender(embedding_dim=16, layers=None, epochs=8, batch_size=2
             self.device = torch.device("cpu")
 
         def fit(self, train_df):
+            import torch
+            import random
+            random.seed(42)
+            np.random.seed(42)
+            torch.manual_seed(42)
+            if torch.cuda.is_available():
+                torch.cuda.manual_seed_all(42)
+
             unique_users = sorted(train_df['userId'].unique())
             unique_items = sorted(train_df['foodId'].unique())
             self.user_map = {uid: i for i, uid in enumerate(unique_users)}

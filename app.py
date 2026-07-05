@@ -158,7 +158,7 @@ def load_data_and_train_models():
     item_cf.fit(train_df)
     
     # Train Funk SVD
-    svd = FunkSVDRecommender(n_factors=15, lr=0.005, reg=0.02, epochs=25)
+    svd = FunkSVDRecommender(n_factors=10, lr=0.01, reg=0.02, epochs=8)
     svd.fit(train_df)
     
     # Train NCF

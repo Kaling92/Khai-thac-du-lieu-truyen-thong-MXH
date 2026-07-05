@@ -198,7 +198,7 @@ Chia dữ liệu & Train 90\% / Test 10\%, random\_state=42 \\
 CBF & TF-IDF max\_features=2000, Cosine similarity \\
 Memory-CF & $k=15$ neighbors, Cosine \& Pearson \\
 Funk SVD & $f=10$ latent factors, lr=0.01, $\lambda=0.02$, epochs=8, SGD \\
-NCF (MLP) & hidden=(16,), Adam lr=0.001, max\_iter=20, batch=512, early\_stopping \\
+NCF (MLP) & \textbf{2.5416} & \textbf{1.5942} & \textbf{1.3822} & \textbf{0.2764} & \textbf{39.60\%} & \textbf{5.98\%} & \textbf{39.06\%} & \textbf{59.78\%} \\
 Ngưỡng relevance & rating $\geq 3.5$; Top-$K$=10 \\
 \bottomrule
 \end{tabular}
@@ -214,7 +214,7 @@ Ngưỡng relevance & rating $\geq 3.5$; Top-$K$=10 \\
 \label{tab:cbf}
 \begin{tabular}{lcccc|cccc}
 \toprule
-& \multicolumn{4}{c|}{\textbf{Regression}} & \multicolumn{4}{c}{\textbf{Ranking}} \\CBF (TF-IDF) & 3.8035 & 1.9502 & 1.6100 & 0.3220 & 36.93\% & 5.58\% & 36.70\% & 56.90\% \\\bottomrule
+& \multicolumn{4}{c|}{\textbf{Regression}} & \multicolumn{4}{c}{\textbf{Ranking}} \\CBF (TF-IDF) & \textbf{3.8035} & \textbf{1.9502} & \textbf{1.6100} & \textbf{0.3220} & \textbf{36.93\%} & \textbf{5.58\%} & \textbf{36.70\%} & \textbf{56.90\%} \\\bottomrule
 \end{tabular}
 \end{table*}
 
@@ -226,7 +226,7 @@ Ngưỡng relevance & rating $\geq 3.5$; Top-$K$=10 \\
 \label{tab:cf}
 \begin{tabular}{lcccc|cccc}
 \toprule
-& \multicolumn{4}{c|}{\textbf{Regression}} & \multicolumn{4}{c}{\textbf{Ranking}} \\User-CF (Cosine) & 2.6990 & 1.6429 & 1.4087 & 0.2817 & \textbf{39.50\%} & \textbf{5.99\%} & \textbf{39.92\%} & 59.92\% \\User-CF (Pearson) & 2.7588 & 1.6610 & 1.4195 & 0.2839 & 38.61\% & 5.81\% & 38.50\% & 58.63\% \\Item-CF (Cosine) & 2.6509 & 1.6282 & 1.4016 & 0.2803 & 38.51\% & 5.83\% & 38.27\% & 60.47\% \\Item-CF (Pearson) & 2.6910 & 1.6404 & 1.4088 & 0.2818 & 37.23\% & 5.61\% & 37.67\% & 59.18\% \\\bottomrule
+& \multicolumn{4}{c|}{\textbf{Regression}} & \multicolumn{4}{c}{\textbf{Ranking}} \\User-CF (Cosine) & 2.6990 & 1.6429 & 1.4087 & 0.2817 & \textbf{39.50\%} & \textbf{5.99\%} & \textbf{39.92\%} & 59.92\% \\User-CF (Pearson) & 2.7588 & 1.6610 & 1.4195 & 0.2839 & 38.61\% & 5.81\% & 38.50\% & 58.63\% \\Item-CF (Cosine) & \textbf{2.6509} & \textbf{1.6282} & \textbf{1.4016} & \textbf{0.2803} & 38.51\% & 5.83\% & 38.27\% & \textbf{60.47\%} \\Item-CF (Pearson) & 2.6910 & 1.6404 & 1.4088 & 0.2818 & 37.23\% & 5.61\% & 37.67\% & 59.18\% \\\bottomrule
 \end{tabular}
 \end{table*}
 
@@ -238,7 +238,7 @@ Ngưỡng relevance & rating $\geq 3.5$; Top-$K$=10 \\
 \label{tab:svd}
 \begin{tabular}{lcccc|cccc}
 \toprule
-Funk SVD ($f$=10) & 2.7118 & 1.6467 & 1.4141 & 0.2828 & 37.72\% & 5.68\% & 37.62\% & 57.47\% \\\bottomrule
+Funk SVD ($f$=10) & \textbf{2.7831} & \textbf{1.6683} & \textbf{1.4244} & \textbf{0.2849} & \textbf{38.71\%} & \textbf{5.84\%} & \textbf{38.93\%} & \textbf{60.92\%} \\\bottomrule
 \end{tabular}
 \end{table*}
 
@@ -250,7 +250,7 @@ Funk SVD ($f$=10) & 2.7118 & 1.6467 & 1.4141 & 0.2828 & 37.72\% & 5.68\% & 37.62
 \label{tab:ncf}
 \begin{tabular}{lcccc|cccc}
 \toprule
-NCF (MLP) & \textbf{2.5276} & \textbf{1.5898} & \textbf{1.3763} & \textbf{0.2753} & 35.54\% & 5.36\% & 36.69\% & \textbf{62.30\%} \\\bottomrule
+NCF (MLP) & \textbf{2.5416} & \textbf{1.5942} & \textbf{1.3822} & \textbf{0.2764} & \textbf{39.60\%} & \textbf{5.98\%} & \textbf{39.06\%} & \textbf{59.78\%} \\\bottomrule
 \end{tabular}
 \end{table*}
 
@@ -263,7 +263,12 @@ NCF (MLP) & \textbf{2.5276} & \textbf{1.5898} & \textbf{1.3763} & \textbf{0.2753
 \begin{tabular}{lcccc|cccc}
 \toprule
 \textbf{Mô hình} & MSE & RMSE & MAE & NMAE & P@10 & R@10 & NDCG & MRR \\\midrule
-Content-Based & 3.8035 & 1.9502 & 1.6100 & 0.3220 & 36.93\% & 5.58\% & 36.70\% & 56.90\% \\User-CF (Cosine) & 2.6990 & 1.6429 & 1.4087 & 0.2817 & \textbf{39.50\%} & \textbf{5.99\%} & \textbf{39.92\%} & 59.92\% \\Item-CF (Cosine) & 2.6509 & 1.6282 & 1.4016 & 0.2803 & 38.51\% & 5.83\% & 38.27\% & 60.47\% \\Funk SVD & 2.7118 & 1.6467 & 1.4141 & 0.2828 & 37.72\% & 5.68\% & 37.62\% & 57.47\% \\\textbf{Neural CF} & \textbf{2.5276} & \textbf{1.5898} & \textbf{1.3763} & \textbf{0.2753} & 35.54\% & 5.36\% & 36.69\% & \textbf{62.30\%} \\\bottomrule
+Content-Based & 3.8035 & 1.9502 & 1.6100 & 0.3220 & 36.93\% & 5.58\% & 36.70\% & 56.90\% \\
+User-CF (Cosine) & 2.6990 & 1.6429 & 1.4087 & 0.2817 & 39.50\% & \textbf{5.99\%} & \textbf{39.92\%} & 59.92\% \\
+Item-CF (Cosine) & 2.6509 & 1.6282 & 1.4016 & 0.2803 & 38.51\% & 5.83\% & 38.27\% & 60.47\% \\
+Funk SVD & 2.7831 & 1.6683 & 1.4244 & 0.2849 & 38.71\% & 5.84\% & 38.93\% & \textbf{60.92\%} \\
+\textbf{Neural CF} & \textbf{2.5416} & \textbf{1.5942} & \textbf{1.3822} & \textbf{0.2764} & \textbf{39.60\%} & 5.98\% & 39.06\% & 59.78\% \\
+\bottomrule
 \end{tabular}
 \end{table*}
 
