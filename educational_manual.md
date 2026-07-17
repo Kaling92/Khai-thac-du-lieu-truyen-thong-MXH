@@ -332,3 +332,4 @@ Hiện tượng này được gọi là **Sự bất đối xứng giữa Hàm t
 1.  **Học sâu không phải là vạn năng:** NCF rất tốt cho việc khớp điểm số, nhưng các phương pháp Heuristic (như User-CF) vẫn cực kỳ mạnh mẽ cho việc xếp hạng thực tế nhờ không bị suy hao tín hiệu qua các lớp ẩn.
 2.  **Đánh giá đa chiều:** Khi viết luận văn, luôn luôn phải so sánh cả Regression và Ranking. Một hệ thống gợi ý thương mại điện tử thực tế luôn ưu tiên độ chính xác Ranking hơn là điểm dự đoán tuyệt đối.
 3.  **Tái lập kết quả:** Đảm bảo cố định seed ngẫu nhiên (`random_state=42`) cho tất cả các thư viện (Numpy, PyTorch, Scikit-learn) là điều kiện bắt buộc để bài báo khoa học được công nhận.
+
